@@ -1,29 +1,88 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
-// var items = require('../database-mongo');
+const express = require('express');
+const app = express();
+const PORT = 8080 || process.env.PORT;
+const db= require('../database')
 
-var app = express();
+//require middleware
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
 
-// UNCOMMENT FOR REACT
-// app.use(express.static(__dirname + '/../react-client/dist'));
 
-// UNCOMMENT FOR ANGULAR
-// app.use(express.static(__dirname + '/../angular-client'));
-// app.use(express.static(__dirname + '/../node_modules'));
+//QUESTION: what does body parser do? in some instances my file wouldnt run without it
+app.use(bodyParser.json())
+app.use(morgan('dev'))
 
-app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
+app.use(express.static('public'));
+
+
+app.get('/homeUsers/:home_id', function (req, res) {
+
+  const homeId = req.params.home_id;
+
+  const sql = `SELECT name FROM homes WHERE id = ?`;
+
+  db.query(sql, homeId, (err, data) => {
+    if (err) {
+      console.log('Error fetching home user information', err);
+      res.send(500);
     } else {
-      res.json(data);
+      res.send(data);
     }
-  });
+  })
 });
 
-app.listen(3000, function() {
-  console.log('listening on port 3000!');
+app.get('/user/:user_id', function (req, res) {
+
+  const userId = req.params.user_id;
+
+  const sql = `SELECT * FROM users WHERE id = ?`;
+
+  db.query(sql, userId, (err, data) => {
+    if (err) {
+      console.log('Error fetching user information', err);
+      res.send(500);
+    } else {
+      res.send(data);
+    }
+  })
 });
 
+app.get('/status/:status_id', function (req, res) {
+
+  const statusId = req.params.status_id;
+
+  const sql = `SELECT * FROM status WHERE id = ?`;
+
+  db.query(sql, userId, (err, data) => {
+    if (err) {
+      console.log('Error fetching status information', err);
+      res.send(500);
+    } else {
+      res.send(data);
+    }
+  })
+});
+
+app.post('/user', function (req, res) {
+
+  const user = [req.body.firstName, req.body.lastName, req.body.userName, req.body,password, req.body.homeId, req.body.userAvatar];
+
+  const sql = `INSERT INTO users (firstName, lastName, userName, password, userAvatar) VALUES (?, ?, ?, ?, ?, ?)`;
+
+  db.query(sql, user, (err, data) => {
+    if (err) {
+      console.log('Error inputting user information', err);
+      res.send(500);
+    } else {
+      res.send(201);
+    }
+  })
+});
+
+
+
+
+
+app.listen(8080, function() {
+  console.log('listening on port 8080!');
+});
