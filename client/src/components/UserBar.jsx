@@ -7,6 +7,7 @@ class UserBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      currenStatus: this.props.currentStatus
     }
   }
 
@@ -23,12 +24,12 @@ class UserBar extends React.Component {
           </div>
           <div className = 'userTxt'>
             <div className = 'username'>Marissa</div>
-            <div className = 'userStatusTxt'>{this.props.currentStatus[0]}</div>
+            <div className = 'userStatusTxt'>{this.props.currentStatus[2]}</div>
           </div>
         </div>
         {
               this.props.status.map ((status, index) => (
-                <UserStatus status = {status[0]} color = {status[1]} key = {status + "." + index} currentStatus = {this.props.currentStatus}/>
+                <UserStatus status = {status[0]} statusTxt = {status[2]} color = {status[1]} key = {status + "." + index} currentStatus = {this.state.currentStatus} updateCurrent = {this.props.updateCurrent}/>
               ))
             }
       </div>

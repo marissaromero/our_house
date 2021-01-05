@@ -3,14 +3,10 @@ const app = express();
 const PORT = 8080 || process.env.PORT;
 const db= require('../database')
 
-//require middleware
-const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
 
-//QUESTION: what does body parser do? in some instances my file wouldnt run without it
 app.use(bodyParser.json())
-app.use(morgan('dev'))
 
 app.use(express.static('public'));
 
@@ -65,9 +61,9 @@ app.get('/status/:status_id', function (req, res) {
 
 app.post('/user', function (req, res) {
 
-  const user = [req.body.firstName, req.body.lastName, req.body.userName, req.body,password, req.body.homeId, req.body.userAvatar];
+  const user = [req.body.firstName, req.body.lastName, req.body.username, req.body,password, req.body.homeId, req.body.userAvatar];
 
-  const sql = `INSERT INTO users (firstName, lastName, userName, password, userAvatar) VALUES (?, ?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO users (firstName, lastName, username, password, homeId, currentStatus, userAvatar) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
   db.query(sql, user, (err, data) => {
     if (err) {

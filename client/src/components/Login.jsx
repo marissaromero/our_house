@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios'
-import TopNav from './TopNav.jsx'
+import {Link } from "react-router-dom";
 
 
 class Login extends React.Component {
@@ -48,10 +48,12 @@ class Login extends React.Component {
             <div className = 'password1Input'>
             <input className = 'formTxt' value={this.state.password} onChange={this.handleChange} placeholder= 'password' />
             </div>
-
-            <input className = 'submitButton' type="submit" value="submit" />
-
-            <div className = 'signUp1'>new to ourHouse? join now</div>
+            <Link to="/">
+              <input className = 'submitButton' type="submit" value="submit" />
+            </Link>
+            <div className = 'signUp1'>new to ourHouse?
+              <Link to="/signup">join now</Link>
+            </div>
           </form>
         </div>
         <img className = 'girlStudying' src='/girlStudying.svg'></img>

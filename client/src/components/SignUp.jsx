@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import {Link } from "react-router-dom";
 
 
 class SignUp extends React.Component {
@@ -13,6 +13,7 @@ class SignUp extends React.Component {
       password: '',
       email: '',
       home:'',
+      avatar: ''
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -47,10 +48,10 @@ class SignUp extends React.Component {
           <form className = 'signUpFormContainer' onSubmit={this.handleSubmit}>
             <div className = 'signUpTitle'>Sign Up</div>
             <div className = 'firstNameInput'>
-              <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'firstname' />
+              <input className = 'formTxt' value={this.state.firstName} onChange={this.handleChange} placeholder= 'firstname' />
             </div>
             <div className = 'lastNameInput'>
-              <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'lastname' />
+              <input className = 'formTxt' value={this.state.lastName} onChange={this.handleChange} placeholder= 'lastname' />
             </div>
             <div className = 'username2Input'>
               <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'username' />
@@ -59,20 +60,24 @@ class SignUp extends React.Component {
             <input className = 'formTxt' value={this.state.password} onChange={this.handleChange} placeholder= 'password' />
             </div>
             <div className = 'emailInput'>
-              <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'email' />
+              <input className = 'formTxt' value={this.state.email} onChange={this.handleChange} placeholder= 'email' />
+            </div>
+            <div className = 'avatarInput'>
+              <input className = 'formTxt' value={this.state.avatar} onChange={this.handleChange} placeholder= 'avatar' />
             </div>
             <div className = 'homeCodeInput'>
-              <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'home' />
+              <input className = 'formTxt' value={this.state.home} onChange={this.handleChange} placeholder= 'home' />
             </div>
-
-            <input className = 'joinButton' type="submit" value="join home" />
-
-
-            <input className = 'createButton' type="submit" value="create new home" />
-
+            <Link to="/">
+            <input className = 'joinButton' type="submit" value="join a home" />
+            </Link>
+            <div className = 'or'> ────────  or  ────────</div>
+            <Link to="/">
+            <input className = 'createButton' type="submit" value="create a new home" />
+            </Link>
           </form>
         </div>
-        <img className = 'girlStudying' src='/girlStudying.svg'></img>
+        <img className = 'signUpGirlStudying' src='/girlStudying.svg'></img>
       </div>
 
     )

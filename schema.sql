@@ -10,16 +10,6 @@ CREATE TABLE homes (
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE status (
-  id int NOT NULL AUTO_INCREMENT,
-  status1 varchar(50),
-  status2 varchar(50),
-  status3 varchar(50),
-  status4 varchar(50),
-  status5 varchar(50),
-  PRIMARY KEY (ID)
-);
-
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
   firstName varchar(50) NOT NULL,
@@ -28,7 +18,6 @@ CREATE TABLE users (
   password varchar(50) NOT NULL,
   homeId integer NOT NULL,
   currentStatus varchar(50) NOT NULL,
-  allStatusId integer NOT NULL,
   userAvatar varchar(50) NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (homeId) REFERENCES homes(ID)
