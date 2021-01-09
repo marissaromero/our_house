@@ -9,64 +9,134 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [['user1', '#FAA61A'], ['user2', '#FC0A0A'], ['user3', '#97F58F']],
-      status: [['status1', '#97F58F', 'Free'], ['status2', '#1ADFFA', 'In a zoom call'], ['status3', '#FAA61A', 'Doing Homework'], ['status4', '#FC0A0A', 'Busy']],
-      currentStatus: ['status4', '#FC0A0A', 'Busy']
-
+      currentUser: '',
+      currentStatus:'',
+      users: [],
+      homeName: '',
+      statusList: [['status1', 'Free', '#97F58F'], ['status2', 'In class lecture', '#1ADFFA'], ['status3', 'Doing Homework', '#FAA61A'], ['status4', 'Busy', '#FC0A0A']],
+      color:'',
+      message: '',
+      loaded: false
     }
-    this.updateCurrent = this.updateCurrent.bind(this);
+    this.fetchCurrentUser = this.fetchCurrentUser.bind(this)
+    this.fetchAllUsers = this.fetchAllUsers.bind(this)
+    this.fetchHomeName = this.fetchHomeName.bind(this)
+    this.updateCurrent = this.updateCurrent.bind(this)
+    this.updateMessageColor= this.updateMessageColor.bind(this)
   }
 
   componentDidMount() {
-    // this.fetchStatus();
-    // this.fetchCurrentStatus()
+    this.fetchCurrentUser()
+    this.fetchAllUsers()
+    this.fetchHomeName()
+  }
+
+  fetchCurrentUser() {
+    axios.get('/user/2')
+      .then(({data}) => {
+        this.setState({
+          currentUser: data[0].firstName,
+          currentStatus: data[0].currentStatus
+        })
+      })
+      .then(() => {
+        this.updateMessageColor()
+      })
+      .then(() => {
+        this.setState({
+          loaded: true
+        })
+      })
 
   }
 
-  // fetchCurrentStatus() {
-  //   axios.get('/api/movies')
-  //     .then(({data}) => {
-  //       this.setState({
-  //         currentStatus: data
-  //       })
-  //     })
-  //   console.log('inside fetch status', this.state.status)
-  // }
+  fetchAllUsers() {
+    axios.get('/homeUsers/1')
+      .then(({data}) => {
+        this.setState({
+          users: data
+        })
+      })
+  }
 
-  // addUser(user) {
-  //   console.log('I am adding user info', user)
-  //   axios.put('./user', user)
-  //   .then(() => {
-  //     this.fetchCurrentStatus()
-  //   })
-  // }
+  fetchHomeName() {
+    axios.get('/homeName/1')
+    .then(({data}) => {
+      this.setState({
+        homeName: data[0].homeName
+      })
+    })
+
+
+  }
+
 
   updateCurrent(status) {
-    this.setState ({
-      currentStatus: status
-    })
-    console.log('inside update current', this.state.currentStatus)
+
+    axios.put(`/user/2/${status}`)
+      .then(() => {
+        this.setState ({
+          loaded: false
+        })
+      })
+      .then(() => {
+      this.fetchCurrentUser()
+      })
+      .then(() => {
+        window.location.reload(true);
+      })
+  }
+
+  updateMessageColor() {
+    if (this.state.currentStatus === 'status1') {
+      this.setState({
+        color: "#97F58F",
+        message: 'Free'
+      })
+    }
+    if (this.state.currentStatus === 'status2') {
+      this.setState({
+        color: "#1ADFFA",
+        message: 'In class lecture'
+      })
+    }
+    if (this.state.currentStatus === 'status3') {
+      this.setState({
+        color: "#FAA61A",
+        message: 'Doing Homework'
+      })
+    }
+    if (this.state.currentStatus === 'status4') {
+      this.setState({
+        color: "#FC0A0A",
+        message: 'Busy'
+      })
+    }
   }
 
   render () {
     return (
       <div className = 'main'>
         <TopNav />
-        <div className = 'center'>
-          <div className = 'house'>
-          <img className = 'houseBg' src='/homeBg.svg'></img>
-          <div className = 'users'>
-            {
-              this.state.users.map ((user, index) => (
-                <House user = {user[0]} color = {user[1]} key = {user + "." + index} updateCurrent = {this.state.updateCurrent}/>
-              ))
-            }
-          </div>
-          </div>
+        {
+          this.state.loaded &&
+          <div className = 'center'>
+            <div className = 'house'>
+            <img className = 'houseBg' src='/homeBg.svg'></img>
+            <div className = 'users'>
+              {
+                this.state.users.map ((user, index) => (
+                  <House user = {user.firstName} status = {user.currentStatus} key = {user +'.'+ index} userNum = {'user'+index}updateCurrent = {this.state.updateCurrent} statusList = {this.state.statusList} avatar = {user.userAvatar}/>
+                ))
+              }
+            </div>
+            </div>
 
-          <UserBar status = {this.state.status} currentStatus = {this.state.currentStatus} updateCurrent = {this.updateCurrent}/>
-          <div className='homeName'>the Johnson's</div>
-        </div>
+            <UserBar updateCurrent = {this.updateCurrent} currentUser = {this.state.currentUser} currentStatus = {this.state.currentStatus} message = {this.state.message} color = {this.state.color} statusList = {this.state.statusList}/>
+            <div className='homeName'>{this.state.homeName}</div>
+          </div>
+        }
+
       </div>
 
     )

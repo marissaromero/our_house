@@ -15,7 +15,23 @@ app.get('/homeUsers/:home_id', function (req, res) {
 
   const homeId = req.params.home_id;
 
-  const sql = `SELECT name FROM homes WHERE id = ?`;
+  const sql = `SELECT * FROM users WHERE homeId = ?`;
+
+  db.query(sql, homeId, (err, data) => {
+    if (err) {
+      console.log('Error fetching home user information', err);
+      res.send(500);
+    } else {
+      res.send(data);
+    }
+  })
+});
+
+app.get('/homeName/:home_id', function (req, res) {
+
+  const homeId = req.params.home_id;
+
+  const sql = `SELECT homeName FROM homes WHERE id = ?`;
 
   db.query(sql, homeId, (err, data) => {
     if (err) {
@@ -43,21 +59,6 @@ app.get('/user/:user_id', function (req, res) {
   })
 });
 
-app.get('/status/:status_id', function (req, res) {
-
-  const statusId = req.params.status_id;
-
-  const sql = `SELECT * FROM status WHERE id = ?`;
-
-  db.query(sql, userId, (err, data) => {
-    if (err) {
-      console.log('Error fetching status information', err);
-      res.send(500);
-    } else {
-      res.send(data);
-    }
-  })
-});
 
 app.post('/user', function (req, res) {
 
@@ -75,9 +76,28 @@ app.post('/user', function (req, res) {
   })
 });
 
+app.put('/user/:id/:status', function (req, res) {
 
+  const sql = `UPDATE users SET currentStatus = '${req.params.status}' WHERE id = ${req.params.id}`;
 
+  db.query(sql, (err) => {
+    if (err) {
+      console.log('error updating current status', err);
+      res.send(500);
+    } else {
+      res.send(201);
+    }
+  })
 
+})
+
+// INSERT INTO users (firstName, lastName, username, password, homeId, currentStatus, userAvatar) VALUES ('Marissa', 'Romero', 'marissa.romero', 'password1', 1, 'status1', 'https://imgur.com/ThGbe71')
+
+// INSERT INTO homes (homeName) VALUES ('The Bungalow')
+
+// INSERT INTO users (firstName, lastName, username, password, homeId, currentStatus, userAvatar) VALUES ('Dad', 'Romero', 'dad.romero', 'password3', 1, 'status4', 'https://imgur.com/farpWGC');
+
+// UPDATE users SET currentStatus = 'status4' WHERE id = 3
 
 app.listen(8080, function() {
   console.log('listening on port 8080!');

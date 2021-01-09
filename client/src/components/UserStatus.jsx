@@ -13,28 +13,17 @@ class UserStatus extends React.Component {
   }
 
   componentDidMount() {
-    console.log('look here', this.props.currentStatus,this.props.status )
     if (this.props.currentStatus === this.props.status) {
       this.setState ({
         currentStatus: true
       })
     }
-
   }
 
   handleClick(event) {
     event.preventDefault();
-    console.log('i was just clicked!')
-    var status = [this.props.status, this.props.color, this.props.statusTxt]
-    this.props.updateCurrent(status)
-    this.forceUpdate()
-
-
-    // var searchObj = {search: this.state.value}
-    // this.props.filter(searchObj)
+    this.props.updateCurrent(this.props.status)
   }
-
-
 
   render () {
     return (

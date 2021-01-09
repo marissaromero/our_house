@@ -35,8 +35,10 @@ class SignUp extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log(this.state.password, this.state.username)
-    // var searchObj = {search: this.state.value}
-    // this.props.filter(searchObj)
+    // axios.put('./user', user)
+    //   .then(() => {
+    //     this.fetch
+    //   })
   }
 
 
@@ -57,7 +59,7 @@ class SignUp extends React.Component {
               <input className = 'formTxt' value={this.state.username} onChange={this.handleChange} placeholder= 'username' />
             </div>
             <div className = 'password2Input'>
-            <input className = 'formTxt' value={this.state.password} onChange={this.handleChange} placeholder= 'password' />
+            <input className = 'formTxt' type = 'password' value={this.state.password} onChange={this.handleChange} placeholder= 'password' />
             </div>
             <div className = 'emailInput'>
               <input className = 'formTxt' value={this.state.email} onChange={this.handleChange} placeholder= 'email' />
